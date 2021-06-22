@@ -253,7 +253,7 @@ class MP_base(ABC):
             return None
 
     
-    def _get_coordinate_by_Landmark(self, landmark_name: str, result_index: int) -> None or List:
+    def _get_coordinate_by_Landmark(self, landmark_name: str, result_index: int = 0) -> None or List:
 
         try:
             if self.results_Landmarks and self.MP_landmarks:

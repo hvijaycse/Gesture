@@ -5,6 +5,8 @@ import cv2
 from mediapipe.python.solutions import holistic
 from mediapipe.python.solutions.drawing_utils import DrawingSpec
 
+import numpy as np
+
 from typing import List
 
 class holisticSolution(MP_base):
@@ -71,9 +73,40 @@ class holisticSolution(MP_base):
                 'POSE': self.results.pose_landmarks,
                 'LEFT_HAND': self.results.left_hand_landmarks,
                 'RIGHT_HAND': self.results.right_hand_landmarks
-                }
+            }
         ]
     
+    def get_all_coordinates(self, landmark_name_list: List[str] = None, result_index = 0):
+
+        if self.results_Landmarks:
+            if not landmark_name_list: 
+
+                row = []
+
+                for landmark_name in self.to_be_detected.keys():
+                    if self.to_be_detected[landmark_name] and self.results_Landmarks[result_index][landmark_name] is not None:
+                        for point in self.results_Landmarks[result_index][landmark_name].landmark:
+                            row.append([point.x, point.y, point.y])
+                
+                row = list(
+                    np.array(
+                        row
+                    ).flatten()
+                )
+
+                if not row:
+                    row = None
+                
+            else:
+                row = list(
+                    np.array(
+                        [self._get_coordinate_by_Landmark(landmark_name=landmark_name) for landmark_name in landmark_name_list]
+                    ).flatten()
+                )
+            
+            return row
+            # pass
+        return None
      
     def print_landmarks_list(self,) -> None:
         # This method will print the list of 
@@ -84,17 +117,17 @@ class holisticSolution(MP_base):
             for landmark_name, landmarks in self.MP_landmarks.items():
 
                 if self.MP_landmarks[landmark_name] is not None and self.to_be_detected[landmark_name] is not None:
-                    print('\n\n\n')
 
-                    print(f'{landmark_name} landmark list')
-
+                    print('')
+                    print(f'{landmark_name.title()} landmark list')
+                    print()
                     for landmark in landmarks:
                         print(landmark.name)
         else:
             print(f"Landmarks for {self.solution_Name} is not set")
     
 
-    def _get_coordinate_by_Landmark(self, landmark_name: str, result_index: int) -> None or List:
+    def _get_coordinate_by_Landmark(self, landmark_name: str, result_index: int=0) -> None or List:
         try:
             if self.results_Landmarks and self.MP_landmarks:
 
@@ -107,11 +140,15 @@ class holisticSolution(MP_base):
 
                         landmark_key = landmark_obj.__getitem__(landmark_name)
 
-                        result_Landmark = self.results_Landmarks[result_index][result_landmark_name][landmark_key]
+                        if self.results_Landmarks[result_index][result_landmark_name]:
 
-                        Point = result_Landmark.landmark[landmark_key]
+                            result_Landmark = self.results_Landmarks[result_index][result_landmark_name]
 
-                        return [ Point.x, Point.y, Point.z ]
+                            Point = result_Landmark.landmark[landmark_key]
+
+                            return [ Point.x, Point.y, Point.z ]
+                        else:
+                            return None
                     
                     except:
                         continue
@@ -120,6 +157,8 @@ class holisticSolution(MP_base):
                 return None
         except:
             return None
+    
+
     
     def plot_all_Landmarks(
         self, 
@@ -151,6 +190,7 @@ if __name__ == "__main__":
     cap = cv2.VideoCapture(videoSource)
 
     to_be_detected = ['left_hand']
-    holisticSolution_obj = holisticSolution(cap, to_be_detected)
-
+    
+    holisticSolution_obj = holisticSolution(cap,)
+    
     holisticSolution_obj.run_test()

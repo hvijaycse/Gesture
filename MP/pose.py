@@ -1,11 +1,11 @@
-from MediapipeBase import MediapipeBase
+from MP_base import MP_base
 
 import cv2
 
 from mediapipe.python.solutions import pose
 
 
-class poseSolution(MediapipeBase):
+class poseSolution(MP_base):
 
     def __init__(self, video_Capture: cv2.VideoCapture, min_detection_confidence=0.75, min_tracking_confidence=0.75, **kwargs) -> None:
         super().__init__(video_Capture, min_detection_confidence=min_detection_confidence, min_tracking_confidence=min_tracking_confidence,)

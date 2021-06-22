@@ -1,5 +1,4 @@
-from typing import List
-from MediapipeBase import MediapipeBase
+from MP_base import MP_base
 
 
 import cv2
@@ -7,7 +6,7 @@ from mediapipe.python.solutions import face_mesh
 from mediapipe.python.solutions.drawing_utils import DrawingSpec
 
 
-class facemeshSolution(MediapipeBase):
+class facemeshSolution(MP_base):
 
     def __init__(
         self, 

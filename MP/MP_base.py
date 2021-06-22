@@ -11,7 +11,7 @@ import cv2
 from abc import ABC, abstractmethod
 
 
-class MediapipeBase(ABC):
+class MP_base(ABC):
     # Base class for mediapipe solution detection
 
 
@@ -209,7 +209,10 @@ class MediapipeBase(ABC):
             coordinate1 = self._get_coordinate_by_Landmark_scalled(landmark_name=landmark_name_1, result_index=result_index)
             coordinate2 = self._get_coordinate_by_Landmark_scalled(landmark_name=landmark_name_2, result_index=result_index)
 
-            return (coordinate1 + coordinate2) / 2
+            if coordinate1 is not None and coordinate2 is not None:
+                return (coordinate1 + coordinate2) / 2
+            else:
+                return False
     
 
     def get_all_coordinates(self, landmark_name_list: List[str] = None, result_index = 0):

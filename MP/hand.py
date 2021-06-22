@@ -1,9 +1,11 @@
-from mediapipe.python.solutions import hands
-from MediapipeBase import MediapipeBase
+from MP_base import MP_base
+
 import cv2
 
+from mediapipe.python.solutions import hands
 
-class handSolution(MediapipeBase):
+
+class handSolution(MP_base):
 
     def __init__(self, video_Capture: cv2.VideoCapture, min_detection_confidence=0.75, min_tracking_confidence=0.75, **kwargs) -> None:
 
@@ -29,7 +31,7 @@ class handSolution(MediapipeBase):
 if __name__ == "__main__":
 
     videoSource = 0
-    videoSource = "http://192.168.43.1:8080/video"
+    # videoSource = "http://192.168.43.1:8080/video"
 
     cap = cv2.VideoCapture(videoSource)
 

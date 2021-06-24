@@ -1,4 +1,4 @@
-from MP_base import MP_base
+from .MP_base import MP_base
 
 
 import cv2

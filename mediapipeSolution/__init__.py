@@ -1,0 +1,1 @@
+# Mediapipe solution wrapper package

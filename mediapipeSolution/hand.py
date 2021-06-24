@@ -1,4 +1,4 @@
-from MP_base import MP_base
+from .MP_base import MP_base
 
 import cv2
 
@@ -26,10 +26,7 @@ class handSolution(MP_base):
 
     
     
-
-
-if __name__ == "__main__":
-
+def main():
     videoSource = 0
     # videoSource = "http://192.168.43.1:8080/video"
 
@@ -40,3 +37,6 @@ if __name__ == "__main__":
 
     handPose_obj.run_test()
 
+
+if __name__ == "__main__":
+    main()

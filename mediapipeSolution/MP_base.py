@@ -39,7 +39,7 @@ class MP_base(ABC):
         self.min_tracking_confidence: float = min_tracking_confidence
 
         self.landmark_LastDict: dict = {}
-        self.landmark_Smoothenss: int = 7
+        self.landmark_Smoothenss: int = 5
         self.results_Landmarks: list = []
 
         self.image: np.array = None
@@ -108,7 +108,6 @@ class MP_base(ABC):
             print(f"Landmarks for {self.solution_Name} is not set")
 
     def process(self, image, flip = True) -> None:
-
         # process method to process the input image and
         # update the result based upon the result. 
 
@@ -164,6 +163,21 @@ class MP_base(ABC):
         if self.results_Landmarks:
 
             Cordinates  = self._get_coordinate_by_Landmark_scalled(landmark_name=landmarks_Name, result_index=result_index)
+            if Cordinates:
+                self.image = cv2.circle(
+                    self.image, Cordinates[:2], radius=radius, 
+                    color=color, thickness=thickness  
+                )
+
+    def plot_this_Landmark_smooth(
+        self,  landmarks_Name: str,
+        result_index = 0, radius:int=4, 
+        color=(121, 22, 76), thickness=2
+        ) -> None:
+
+        if self.results_Landmarks:
+
+            Cordinates  = self.get_coordinate_smooth(landmark_name=landmarks_Name, result_index=result_index)
             if Cordinates:
                 self.image = cv2.circle(
                     self.image, Cordinates[:2], radius=radius, 
@@ -236,6 +250,29 @@ class MP_base(ABC):
             # pass
         return None
     
+
+    def get_coordinate_smooth(self, landmark_name:str, result_index : int = 0):
+
+        coordinates = self._get_coordinate_by_Landmark_scalled(landmark_name=landmark_name, result_index=result_index)
+
+        if coordinates:
+            Nx, Ny, Nz = coordinates
+            if landmark_name in self.landmark_LastDict:
+                Px, Py, Pz = self.landmark_LastDict[landmark_name]
+                cords = [
+                    int(Px + (Nx - Px) / self.landmark_Smoothenss), 
+                    int(Py + (Ny - Py) / self.landmark_Smoothenss), 
+                    int(Pz + (Nz - Pz) / self.landmark_Smoothenss),
+                ]
+            else:
+                cords = coordinates
+            
+            self.landmark_LastDict[landmark_name] = cords
+
+            return cords
+            
+        else:
+            return None
 
     def _get_coordinate_by_Landmark_scalled(self, landmark_name:str, result_index : int = 0):
 

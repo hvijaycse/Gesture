@@ -2,10 +2,13 @@ import pyautogui
 import time
 
 
-def mouseActions(mouseActionQueue: list, stop):
+def mouseActions(
+    mouseActionQueue: list, 
+    stop,
+    scroll_reverse = False):
 
     last_action = ''
-    sleep_time = 0.05
+    sleep_time = 0.1
     while True:
         # print(mouseActionQueue)
         if stop():
@@ -17,8 +20,19 @@ def mouseActions(mouseActionQueue: list, stop):
 
             action = mouseActionQueue.pop()
 
-            if last_action == "LEFTMOUSEDOWN" and action[0]!= "LEFTMOUSEDOWN":
-                pyautogui.mouseUp(button='left')
+            if last_action == "LEFTMOUSEDOWN":
+                if action[0] == "CURSOR":
+                    pyautogui.click()
+                    
+                elif action[0]!= "LEFTMOUSEDOWN":
+                    # print(action[0])
+                    # print("Mouse Up")
+                    # print("-"*20)
+                    # print()
+                    pyautogui.mouseUp(button='left')
+                
+            
+
 
 
             if action[0] == "CURSOR":
@@ -26,10 +40,14 @@ def mouseActions(mouseActionQueue: list, stop):
 
             elif action[0] == "LEFTMOUSEDOWN" :
                 
+                
                 if last_action != action[0]:
+                    # print("-"*20)
+                    # print("MOUSE DOWN")
                     pyautogui.mouseDown(button="left")
-
-                pyautogui.moveTo(action[1][0], action[1][1])
+                else:
+                    # print("MOUSE MOVE")
+                    pyautogui.moveTo(action[1][0], action[1][1])
             
             elif action[0] == "LEFTMOUSEDOUBLECLICK" and last_action != "LEFTMOUSEDOUBLECLICK":
                 pyautogui.doubleClick()
@@ -42,17 +60,20 @@ def mouseActions(mouseActionQueue: list, stop):
                     diff_y = Py - Ny
 
 
-                    if abs(diff_x) < 10:
-                        diff_x = 0
-                    if abs(diff_y) < 10:
-                        diff_y = 0
+                    # if abs(diff_x) < 10:
+                    #     diff_x = 0
+                    # if abs(diff_y) < 10:
+                    #     diff_y = 0
+                    
+                    if not scroll_reverse:
+                        diff_x, diff_y = -diff_x, -diff_y
 
                     if abs(diff_x) > abs(diff_y):
                         pyautogui.hscroll(
-                            clicks=int(diff_x)*5)
+                            clicks=int(diff_x)*10)
                     else:
                         pyautogui.scroll(
-                            clicks=int(diff_y)*5)
+                            clicks=int(diff_y)*15)
                 Px, Py = action[1]
                 
             

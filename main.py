@@ -1,4 +1,4 @@
-from mediapipeSolution import hand
+from tkinter.tix import Tree
 from mediapipeSolution.hand import handSolution
 from gestureHandler.mouse import mouseActions
 
@@ -32,13 +32,16 @@ def main():
     video_Source = config["video_Source"]
     model_filename = config["model_filename"]
 
-    screenW, screenH  = pyautogui.size()
+
 
     stop_threads = False
 
     thread_stop_func = lambda: stop_threads
 
     arguments = sys.argv[1:]
+    
+    if not arguments :
+        arguments.append("Help")
 
     cap = cv2.VideoCapture(video_Source)
 
@@ -59,9 +62,26 @@ def main():
         max_num_hands = 1
         )
 
+    screenW, screenH  = pyautogui.size()
+    pyautogui.FAILSAFE=False
+
+    cap_w = handSolution_obj.frame_Width
+    cap_h = handSolution_obj.frame_Height
+
+    frame_Xs = int((cap_w * config['FrameXS'][0]) / config['FrameXS'][1])
+    frame_Xe = int((cap_w * config['FrameXE'][0]) / config['FrameXE'][1])
+
+    frame_Ys = int((cap_h * config['FrameYS'][0]) / config['FrameYS'][1])
+    frame_Ye = int((cap_h * config['FrameYE'][0]) / config['FrameYE'][1])
+
+    MouseAction_Queue = []
+    mouse_thread = Thread(target = mouseActions, args = ( MouseAction_Queue, thread_stop_func,))
+    mouse_thread.start()
+
+
     try:
 
-        if arguments[0] == 'check':
+        if arguments[0].lower() == 'test':
 
             while cap.isOpened():
 
@@ -91,31 +111,21 @@ def main():
                 
                 # cv2.imshow('Hand gesture', handSolution_obj.image)
 
+                handSolution_obj.plot_rectangle(
+                    (frame_Xs, frame_Ys),
+                    (frame_Xe, frame_Ye)
+                )
+
+                handSolution_obj.plot_all_Landmarks()
+
                 handSolution_obj.imshow()
 
                 if cv2.waitKey(1) & 0xFF == 27:
+                    stop_threads = True
+                    mouse_thread.join()
                     break
         
-        elif arguments[0] == "run":
-
-            pyautogui.FAILSAFE=False
-
-            cap_w = handSolution_obj.frame_Width
-            cap_h = handSolution_obj.frame_Height
-
-            frame_Xs = int((cap_w * config['FrameXS'][0]) / config['FrameXS'][1])
-            frame_Xe = int((cap_w * config['FrameXE'][0]) / config['FrameXE'][1])
-
-            frame_Ys = int((cap_h * config['FrameYS'][0]) / config['FrameYS'][1])
-            frame_Ye = int((cap_h * config['FrameYE'][0]) / config['FrameYE'][1])
-
-            print(frame_Xs, frame_Ys)
-            print(frame_Xe, frame_Ye)
-            MouseAction_Queue = []
-
-            mouse_thread = Thread(target = mouseActions, args = ( MouseAction_Queue, thread_stop_func,))
-
-            mouse_thread.start()
+        elif arguments[0].lower() == "run":
 
             while cap.isOpened():
         
@@ -164,6 +174,7 @@ def main():
                             X = np.interp(X, [frame_Xs, frame_Xe], [0, screenW])
 
                             Y = np.interp(Y, [frame_Ys, frame_Ye], [0, screenH])
+                        
 
                         MouseAction_Queue.append(
                             [
@@ -175,13 +186,10 @@ def main():
 
                     handSolution_obj.plot_this_Landmark_smooth(landmark_name)
 
-                    
-                handSolution_obj.image = cv2.rectangle(
-                    handSolution_obj.image, 
-                    (frame_Xe, frame_Ye),
+                
+                handSolution_obj.plot_rectangle(
                     (frame_Xs, frame_Ys),
-                    (255, 0, 0),
-                    2,
+                    (frame_Xe, frame_Ye),
                 )
                 
                 handSolution_obj.imshow()
@@ -191,6 +199,12 @@ def main():
                     mouse_thread.join()
                     print("BYE BYE")
                     break
+
+        elif arguments[0] == "Help":
+            pass
+
+        else:
+            pass    
     
     except KeyboardInterrupt:
         stop_threads = True

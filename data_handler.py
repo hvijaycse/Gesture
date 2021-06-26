@@ -1,5 +1,6 @@
 import sys
 import os
+from numpy.distutils.misc_util import all_strings
 
 import pandas as pd
 
@@ -39,12 +40,16 @@ def main():
         
     arguments = sys.argv[1:]
 
+    if not arguments :
+        arguments.append("Help")
+
+
     if arguments[0].lower() == 'add':
 
         
 
         class_name = arguments[1]
-        data_points_to_be_collected = 400
+        data_points_to_be_collected = 600
         collected = 0
 
         multiply_row = []
@@ -66,6 +71,15 @@ def main():
             cap,
             max_num_hands=1
         )
+
+        cap_w = handSolution_obj.frame_Width
+        cap_h = handSolution_obj.frame_Height
+
+        frame_Xs = int((cap_w * config['FrameXS'][0]) / config['FrameXS'][1])
+        frame_Xe = int((cap_w * config['FrameXE'][0]) / config['FrameXE'][1])
+
+        frame_Ys = int((cap_h * config['FrameYS'][0]) / config['FrameYS'][1])
+        frame_Ye = int((cap_h * config['FrameYE'][0]) / config['FrameYE'][1])
 
         while collected < data_points_to_be_collected:
             
@@ -90,16 +104,19 @@ def main():
                 # print(row, row_procced, sep='\n')
                 row_procced.insert(0, class_name)
                 csv_writer.writerow(row_procced)
+            
+            handSolution_obj.plot_rectangle(
+                (frame_Xs, frame_Ys),
+                (frame_Xe, frame_Ye)
+            )
 
             handSolution_obj.imshow()
             cv2.waitKey(1)
 
             collected += 1
         
+        print(f"{class_name} added to dataset")
         file.close()
-        
-
-
 
 
     
@@ -107,16 +124,37 @@ def main():
         removeClass = arguments[1]
 
         df = pd.read_csv(data_filename)
+        all_class = df['Class'].unique()
+
+        if removeClass not in all_class:
+            print(f"{removeClass} not in dataset")
+            print("List of all the class: ", all_class)
+            exit()
+
         df.drop(df[df['Class']==removeClass].index, axis=0, inplace=True)
         df.to_csv(data_filename, index=False)
+        print(f'{removeClass} removed from data set')
     
     elif arguments[0].lower() == 'delete_all':
+        print("#"*40)
+        print("WARNING: YOU ARE GOING TO DELETE COMPLETE DATASET!!!")
+        print("#"*40)
+        print()
+        ans = input("PLEASE ENTER 'Y' TO CONFIRM THE ACTION: ")
 
-        df = pd.read_csv(data_filename)
-        df.drop(df.index, axis=0, inplace=True)
-        df.to_csv(data_filename, index=False)
-
+        if ans.lower() == 'y':
+            df = pd.read_csv(data_filename)
+            df.drop(df.index, axis=0, inplace=True)
+            df.to_csv(data_filename, index=False)
+            print("COMPLETE DATASET DELETED")
+        else:
+            print("DATASET NOT DELETED")
     
+    elif arguments[0].lower() == "list":
+        df = pd.read_csv(data_filename)    
+
+        all_class = df['Class'].unique()
+        print("All class: ", all_class)
 if __name__ == "__main__":
     
     main()

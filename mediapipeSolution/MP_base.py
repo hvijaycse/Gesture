@@ -39,7 +39,7 @@ class MP_base(ABC):
         self.min_tracking_confidence: float = min_tracking_confidence
 
         self.landmark_LastDict: dict = {}
-        self.landmark_Smoothenss: int = 7
+        self.landmark_Smoothenss: int = 12
         self.results_Landmarks: list = []
 
         self.image: np.array = None
@@ -325,6 +325,23 @@ class MP_base(ABC):
         '''
         pass
 
+
+    def plot_rectangle(
+        self, 
+        point1, 
+        point2, 
+        color = (255, 0, 0), 
+        thickness=2,
+        **kwargs) -> None:
+
+        self.image = cv2.rectangle(
+            self.image,
+            point1,
+            point2,
+            color=color,
+            thickness=thickness,
+            **kwargs,
+        )
 
 
     '''

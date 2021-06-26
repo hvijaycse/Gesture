@@ -39,7 +39,7 @@ class MP_base(ABC):
         self.min_tracking_confidence: float = min_tracking_confidence
 
         self.landmark_LastDict: dict = {}
-        self.landmark_Smoothenss: int = 5
+        self.landmark_Smoothenss: int = 7
         self.results_Landmarks: list = []
 
         self.image: np.array = None

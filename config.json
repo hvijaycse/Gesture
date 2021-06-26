@@ -6,6 +6,10 @@
     "model_filename": "handModel.pkl",
     "video_Source": "http://192.168.43.1:8080/video",
 
+    "FrameXS": [ 2, 8 ],
+    "FrameXE": [ 6, 8 ],
+    "FrameYS": [ 2, 8 ],
+    "FrameYE": [ 6, 8 ],
 
     "Gesture": {
         "Idle": "IDLE",
@@ -13,5 +17,24 @@
         "Scroll": "SCROLL",
         "LeftMouseDown": "LEFTMOUSEDOWN",
         "LeftMouseDoubleClick": "LEFTMOUSEDOUBLECLICK"
+    },
+
+    "Landmarks": {
+        "IDLE": "THUMB_TIP",
+        "CURSOR": "THUMB_TIP",
+        "SCROLL": "THUMB_TIP",
+        "LEFTMOUSEDOWN": "THUMB_TIP",
+        "LEFTMOUSEDOUBLECLICK": "THUMB_TIP",
+        "ZOOM": [ "THUMB_TIP", "INDEX_FINGER_TIP" ]
+    },
+
+    "Landmark_Scalling": {
+        "IDLE": 0,
+        "CURSOR": 1,
+        "LEFTMOUSEDOWN": 1,
+        "SCROLL": 0,
+        "ZOOM": 0
+
     }
+
 }

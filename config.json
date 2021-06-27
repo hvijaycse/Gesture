@@ -17,15 +17,17 @@
         "Cursor": "CURSOR",
         "Scroll": "SCROLL",
         "LeftMouseDown": "LEFTMOUSEDOWN",
-        "LeftMouseDoubleClick": "LEFTMOUSEDOUBLECLICK"
+        "LeftMouseDoubleClick": "LEFTMOUSEDOUBLECLICK",
+        "TaskView": "TASKVIEW"
     },
 
     "Landmarks": {
         "IDLE": "THUMB_TIP",
-        "CURSOR": "THUMB_TIP",
+        "CURSOR": "MIDDLE_FINGER_TIP",
+        "LEFTMOUSEDOWN": "MIDDLE_FINGER_TIP",
+        "LEFTMOUSEDOUBLECLICK": "MIDDLE_FINGER_TIP",
         "SCROLL": "INDEX_FINGER_TIP",
-        "LEFTMOUSEDOWN": "THUMB_TIP",
-        "LEFTMOUSEDOUBLECLICK": "THUMB_TIP",
+        "TASKVIEW": "INDEX_FINGER_TIP",
         "ZOOM": [ "THUMB_TIP", "INDEX_FINGER_TIP" ]
     },
 
@@ -34,8 +36,8 @@
         "CURSOR": 1,
         "LEFTMOUSEDOWN": 1,
         "SCROLL": 0,
+        "TASKVIEW": 0,
         "ZOOM": 0
-
     }
 
 }

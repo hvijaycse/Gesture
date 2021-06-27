@@ -1,6 +1,5 @@
 import sys
 import os
-from numpy.distutils.misc_util import all_strings
 
 import pandas as pd
 
@@ -89,7 +88,7 @@ def main():
 
             if handSolution_obj.results_Landmarks:
 
-                handSolution_obj.put_text_on_landmark(class_name, "WRIST")
+                handSolution_obj.put_text_on_landmark(f"{class_name}, {collected}: Data points collected ", "WRIST")
 
                 handSolution_obj.plot_all_Landmarks()
 

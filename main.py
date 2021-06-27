@@ -1,4 +1,3 @@
-from tkinter.tix import Tree
 from mediapipeSolution.hand import handSolution
 from gestureHandler.mouse import mouseActions
 
@@ -99,18 +98,20 @@ def main():
                         )
                     
                     predection = model.predict([row])[0]
+                    gesture_name = config["Gesture"].get(predection, "IDLE")
+                    Landmark_name = config["Landmarks"].get(gesture_name, "THUMB_TIP")
+
+                    handSolution_obj.plot_this_Landmark_smooth(
+                        Landmark_name,
+                        color=(89, 52, 249)
+                        )
 
                     handSolution_obj.put_text_on_landmark(
                         text=predection,
                         landmark_name="WRIST"
                     )
                 
-                # handSolution_obj.plot_all_Landmarks()
-
-                handSolution_obj.plot_this_Landmark_smooth("THUMB_TIP")
-                
-                # cv2.imshow('Hand gesture', handSolution_obj.image)
-
+               
                 handSolution_obj.plot_rectangle(
                     (frame_Xs, frame_Ys),
                     (frame_Xe, frame_Ye)
@@ -201,9 +202,13 @@ def main():
                     break
 
         elif arguments[0] == "Help":
+            stop_threads = True
+            mouse_thread.join()
             pass
 
         else:
+            stop_threads = True
+            mouse_thread.join()
             pass    
     
     except KeyboardInterrupt:

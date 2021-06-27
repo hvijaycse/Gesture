@@ -25,7 +25,7 @@ class poseSolution(MP_base):
 if __name__ == "__main__":
 
     videoSource = 0
-    videoSource = "http://192.168.43.1:8080/video"
+    # videoSource = "http://192.168.43.1:8080/video"
 
     cap = cv2.VideoCapture(videoSource)
 

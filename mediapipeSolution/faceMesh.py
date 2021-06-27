@@ -34,35 +34,10 @@ class facemeshSolution(MP_base):
 if __name__ == "__main__":
 
     videoSource = 0
-    videoSource = "http://192.168.43.1:8080/video"
+    # videoSource = "http://192.168.43.1:8080/video"
 
     cap = cv2.VideoCapture(videoSource)
 
     faceMesh_object = facemeshSolution(cap)
 
     faceMesh_object.run_test()
-
-    # while cap.isOpened():
-
-    #     success, image = cap.read()
-
-    #     if not success:
-    #         print("Skipping the empty frame")
-    #         break
-
-    #     faceMesh_object.process(image)
-
-    #     faceMesh_object.plot_all_Landmarks(
-    #         landmarks_Specs= DrawingSpec(color=(121, 22, 76), thickness=1, circle_radius=1)
-    #     )
-
-    #     faceMesh_object.imshow()
-
-    #     print(faceMesh_object.get_all_coordinates())
-
-
-
-    #     if cv2.waitKey(1) & 0xFF == 21:
-    #         print("Exiting the program.")
-    #         break
-         

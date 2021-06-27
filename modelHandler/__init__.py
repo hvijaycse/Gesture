@@ -1,1 +1,1 @@
-# Package for classification
+# Module for classification

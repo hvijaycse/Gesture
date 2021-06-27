@@ -1,3 +1,5 @@
+# Importing all the modules required.
+
 from typing import List
 
 import mediapipe as mp
@@ -5,14 +7,14 @@ from mediapipe.python.solutions.drawing_utils import DrawingSpec
 
 
 import numpy as np
-
 import cv2
+
 
 from abc import ABC, abstractmethod
 
 
 class MP_base(ABC):
-    # Base class for mediapipe solution detection
+    # Abstract Base class for mediapipe solution detection
 
 
     def __init__(
@@ -190,6 +192,7 @@ class MP_base(ABC):
         result_index = 0, fontFace = cv2.FONT_HERSHEY_PLAIN, fontScale = 1, 
         color = (255, 255, 255), **kwargs
         ) -> None:
+        # This method put a text on the ladmark on the image
 
         coordinates = self._get_coordinate_by_Landmark_scalled(landmark_name=landmark_name, result_index=result_index)
 

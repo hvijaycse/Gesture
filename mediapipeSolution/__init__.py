@@ -1,1 +1,1 @@
-# Mediapipe solution wrapper package
+# Mediapipe solution wrapper module

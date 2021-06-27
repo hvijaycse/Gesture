@@ -92,7 +92,7 @@ Use this image for landmark names ![image.png](https://google.github.io/mediapip
 
 ## 6 List of references
 
-1. Google's amazing [mediapile](https://google.github.io/mediapipe/solutions/solutions.html) solution library.
+1. Google's amazing [mediapipe](https://google.github.io/mediapipe/solutions/solutions.html) solution library.
 
 2. This amazing tutorial on mediapipe [tutorial.](https://www.youtube.com/watch?v=01sAkU_NvOY)
 
